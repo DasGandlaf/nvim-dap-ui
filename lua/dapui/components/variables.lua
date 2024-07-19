@@ -51,6 +51,10 @@ return function(client, send_ready)
       table.sort(variables, config.render.sort_variables)
     end
     for _, variable in pairs(variables) do
+      if variable.value == "Variable is optimized away and not available." then
+        goto continue
+      end
+
       local var_path = parent_path .. "." .. variable.name
 
       canvas:write({
@@ -112,6 +116,7 @@ return function(client, send_ready)
       if expanded_children[var_path] and variable.variablesReference ~= 0 then
         render(canvas, var_path, variable.variablesReference, indent + config.render.indent)
       end
+    ::continue::
     end
   end
 
